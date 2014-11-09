@@ -1,0 +1,21 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.8.RELEASE")
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+
+    apply plugin:'base'
+    apply plugin: 'idea'
+}
+
+subprojects {
+    apply plugin: 'java'
+}

@@ -1,0 +1,13 @@
+classes/
+.DS_Store
+.idea
+*.iws
+*.ipr
+*.iml
+
+build/
+target/
+
+.gradle/
+
+generated-src/

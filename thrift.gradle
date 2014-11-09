@@ -1,0 +1,58 @@
+import org.gradle.internal.os.OperatingSystem
+
+repositories {
+    ivy {
+        artifactPattern "http://dl.bintray.com/bsideup/thirdparty/[artifact]-[revision](-[classifier]).[ext]"
+    }
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    
+    dependencies {
+        classpath "ru.trylogic.gradle.plugins:gradle-thrift-plugin:0.1.1"
+    }
+}
+
+apply plugin: ru.trylogic.gradle.thrift.plugins.ThriftPlugin
+
+task generateThrift(type : ru.trylogic.gradle.thrift.tasks.ThriftCompileTask) {
+    generator = 'java:beans,hashcode'
+    destinationDir = file("generated-src/main/java")
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir generateThrift.destinationDir
+        }
+    }
+}
+
+clean {
+    delete generateThrift.destinationDir
+}
+
+idea {
+    module {
+        sourceDirs += [file('src/main/thrift'), generateThrift.destinationDir]
+    }
+}
+
+compileJava.dependsOn generateThrift
+
+dependencies {
+    def thriftVersion = '0.9.1';
+    Map platformMapping = [
+            (OperatingSystem.WINDOWS) : 'win',
+            (OperatingSystem.MAC_OS) : 'osx'
+    ].withDefault { 'nix' }
+
+    thrift "org.apache.thrift:thrift:$thriftVersion:${platformMapping.get(OperatingSystem.current())}@bin"
+
+    compile "org.apache.thrift:libthrift:$thriftVersion"
+
+    compile 'org.slf4j:slf4j-api:1.7.7'
+}
