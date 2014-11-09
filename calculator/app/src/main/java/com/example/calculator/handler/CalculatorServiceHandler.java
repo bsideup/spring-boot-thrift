@@ -1,8 +1,6 @@
 package com.example.calculator.handler;
 
-import com.example.calculator.TCalculatorService;
-import com.example.calculator.TDivisionByZeroException;
-import com.example.calculator.TOperation;
+import com.example.calculator.*;
 import com.example.calculator.service.CalculatorService;
 import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;

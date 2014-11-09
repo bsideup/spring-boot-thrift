@@ -6,6 +6,7 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.server.TServlet;
 import org.apache.thrift.transport.THttpClient;
+import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -47,13 +48,13 @@ public class TungstenApplication {
     }
     
     @Bean
-    public THttpClient calculatorHttpClient() throws TTransportException {
+    public TTransport calculatorTransport() throws TTransportException {
         return new THttpClient(calculatorEndpoint);
     }
     
     @Bean
-    public TCalculatorService.Client calculatorClient(THttpClient calculatorClient) {
-        TBinaryProtocol protocol = new TBinaryProtocol(calculatorClient);
+    public TCalculatorService.Client calculatorClient(TTransport calculatorTransport) {
+        TBinaryProtocol protocol = new TBinaryProtocol(calculatorTransport);
         
         return new TCalculatorService.Client(protocol);
     }

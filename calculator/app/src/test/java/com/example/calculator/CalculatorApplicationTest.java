@@ -1,13 +1,11 @@
 package com.example.calculator;
 
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.protocol.TProtocolFactory;
+import org.apache.thrift.protocol.*;
 import org.apache.thrift.transport.THttpClient;
-import org.junit.Before;
-import org.junit.Test;
+import org.apache.thrift.transport.TTransport;
+import org.junit.*;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,13 +25,13 @@ public class CalculatorApplicationTest {
     @Value("${local.server.port}")
     protected int port;
     
-    protected TCalculatorService.Client client;
+    protected TCalculatorService.Iface client;
 
     @Before
     public void setUp() throws Exception {
-        THttpClient tHttpClient = new THttpClient("http://localhost:" + port + "/calculator/");
+        TTransport transport = new THttpClient("http://localhost:" + port + "/calculator/");
         
-        TProtocol protocol = protocolFactory.getProtocol(tHttpClient);
+        TProtocol protocol = protocolFactory.getProtocol(transport);
         
         client = new TCalculatorService.Client(protocol);
     }
